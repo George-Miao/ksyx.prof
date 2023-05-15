@@ -28,7 +28,8 @@
   <body
     style="
       margin: 0;
-      padding: 0;
+      padding: 2em;
+      box-sizing: border-box;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -47,40 +48,73 @@
         justify-content: center;
         align-items: center;
         height: 100%;
-        padding: 2rem;
       "
     >
       <img
-        src="./logo.jpg"
+        src="./logo.svg"
         alt="ksyx logo"
-        style="width: 200px; height: 200px; margin-bottom: 2em"
+        style="width: 12em; height: 12em; margin-bottom: 2em"
       />
-      <h1 style="text-align: center">
+      <p>
         ksyx
-        不仅是专家，还具有无比的谦逊品德，在专业上和人生上都是我最崇敬的老师
-      </h1>
-      <h3 style="opacity: 60%; text-align: center">
+        不仅是专家，还具有无比的谦逊品德，在专业上和人生上都是我最崇敬的老师。
+      </p>
+      <p>
         ksyx
         は専門家であるだけでなく、非常に謙虚な性格の持ち主で、仕事においても人生においても、私の最も尊敬する師匠です。
-      </h3>
-    </main>
-    <footer
-      style="
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      "
-    >
-      <p style="opacity: 50%; margin-bottom: 0">
-        「我已经卖了 630 句菜，我 zc」
       </p>
-      <p style="opacity: 50%">
+      <p>ksyx 曾说：</p>
+      <h1 style="text-align: center" id="quote"></h1>
+      <div style="flex-grow: 1"></div>
+    </main>
+    <footer style="display: flex; flex-direction: column; align-items: center">
+      <p>「我已经卖了 630 句菜，我 zc」</p>
+      <p>
         欢迎使用
-        <a style="color: unset" href="https://t.me/realksyx_bot"
-          >@realksyx_bot</a
-        >
+        <a href="https://t.me/realksyx_bot">@realksyx_bot</a>
+      </p>
+      <p>
+        By
+        <a href="https://t.me/popdailydose">Pop</a>, source on
+        <a href="https://github.com/George-Miao/ksyx.prof">Github</a>. Credit to
+        <a href="https://github.com/Trumeet">Yuuta</a> for quote API.
       </p>
     </footer>
   </body>
+  <style>
+    main > p {
+      opacity: 60%;
+      text-align: center;
+      margin: 0.3em;
+    }
+
+    footer > p {
+      opacity: 50%;
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: unset;
+    }
+  </style>
+  <script>
+    window.onload = async () => {
+      fetch('https://ftp.yuuta.moe/ksyxquote/')
+        .then(x => x.json())
+        // .then(() => {
+        //   return {
+        //     msg: '我真的破防了。为什么你们一个个都是学霸，音游又玩的那么好。每天看见你们在群里、动态等各种社交平台分享自己的考试成绩、音游截图、生活日常，我都羡慕至极！只有我是一个成绩又不好，音游又菜，人长得又难看，什么都不会的废物。有害垃圾！想说点什么融入你们，却也什么也拿不出来，甚至发这条说说，我都词穷，凑不出什么像话的言语来。每天看着你们聊天分享自己的生活经历，都感觉难受的要死，破防了，我真的要破防了！'
+        //   }
+        // })
+        .then(({ msg }) => {
+          const el = document.querySelector('#quote')
+          if (msg.length > 12) {
+            el.style.margin = '1em 0'
+            el.style.fontSize = 'clamp(0.6em, 5vw, 1.8em)'
+          }
+          el.innerText = `「${msg}」`
+        })
+    }
+  </script>
 </html>
