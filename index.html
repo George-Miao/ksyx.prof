@@ -104,7 +104,7 @@
     const counter = document.getElementById('counter')
     const StorageKey = 'Wow, a professor from MIT!'
 
-    let count = Number(localStorage.getItem(StorageKey)) || 0;
+    let count = Math.floor(Number(localStorage.getItem(StorageKey))) || 0;
 
     const debounce = (fn, timeout) => {
       let timer;
@@ -115,7 +115,7 @@
         }
 
         timer = setTimeout(() => {
-          fn(args)
+          fn(...args)
         }, timeout)
       }
     }
@@ -124,7 +124,7 @@
       localStorage.setItem(StorageKey, count)
     }, 1000)
 
-    const loadVegetable = async () => {
+    const loadVegetable = () =>
       fetch('https://ftp.yuuta.moe/ksyxquote/')
         .then(x => x.json())
         // .then(() => {
@@ -143,8 +143,6 @@
           counter.innerText = count
           debouncedSet(count)
         })
-    }
-
 
     window.onload = loadVegetable;
 
