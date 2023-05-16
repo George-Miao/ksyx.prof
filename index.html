@@ -69,7 +69,7 @@
       <div style="flex-grow: 1"></div>
     </main>
     <footer style="display: flex; flex-direction: column; align-items: center">
-      <p>「我已经卖了 630 句菜，我 zc」</p>
+      <p>「我已经卖了 <span id="counter">0</span> 句菜，我 zc」</p>
       <p>
         欢迎使用
         <a href="https://t.me/realksyx_bot">@realksyx_bot</a>
@@ -100,7 +100,31 @@
     }
   </style>
   <script>
-    window.onload = async () => {
+    const el = document.querySelector('#quote')
+    const counter = document.getElementById('counter')
+    const StorageKey = 'Wow, a professor from MIT!'
+
+    let count = Math.floor(Number(localStorage.getItem(StorageKey))) || 0;
+
+    const debounce = (fn, timeout) => {
+      let timer;
+
+      return (...args) => {
+        if (timer) {
+          clearTimeout(timer)
+        }
+
+        timer = setTimeout(() => {
+          fn(...args)
+        }, timeout)
+      }
+    }
+
+    const debouncedSet = debounce((count) => {
+      localStorage.setItem(StorageKey, count)
+    }, 1000)
+
+    const loadVegetable = () =>
       fetch('https://ftp.yuuta.moe/ksyxquote/')
         .then(x => x.json())
         // .then(() => {
@@ -109,13 +133,19 @@
         //   }
         // })
         .then(({ msg }) => {
-          const el = document.querySelector('#quote')
           if (msg.length > 12) {
             el.style.margin = '1em 0'
             el.style.fontSize = 'clamp(0.6em, 5vw, 1.8em)'
           }
           el.innerText = `「${msg}」`
+        }).then(() => {
+          count += 1
+          counter.innerText = count
+          debouncedSet(count)
         })
-    }
+
+    window.onload = loadVegetable;
+
+    el.addEventListener('click', loadVegetable)
   </script>
 </html>
